@@ -45,13 +45,28 @@ jobs:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 2
+      
+      - name: Get Run ID
+        id: get_run_id
+        run: |
+          echo "::set-output name=run_id::$(\
+            gh run list \
+              --workflow publish-publisher.yaml \
+              --json conclusion,headSha,status,databaseId \
+              --jq "[.[] | select( .conclusion == \"success\" ) | .databaseId][0]" \
+          )"
+         
           
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+
       # Download the Publisher binary
       - name: Download artifact
         uses: dawidd6/action-download-artifact@v2
         with:
           github_token: ${{secrets.GITHUB_TOKEN}}
           workflow: publish-publisher.yaml
+          run_id: ${{steps.get_run_id.outputs.run_id}}
           name: publisher         
 
       - name: Run publisher without Config Yaml

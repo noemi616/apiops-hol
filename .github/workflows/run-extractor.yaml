@@ -24,11 +24,11 @@ jobs:
 
       - name: Download artifact
         uses: dawidd6/action-download-artifact@v2
-        with:
-          github_token: ${{secrets.GITHUB_TOKEN}}
+        with:          
           workflow: publish-extractor.yaml
           run_id: ${{steps.get_run_id.outputs.run_id}}
           name: extractor
+          github_token: ${{secrets.GITHUB_TOKEN}}
           
       - name: Run extractor
         env:

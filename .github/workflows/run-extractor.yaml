@@ -15,10 +15,12 @@ jobs:
         run: |
           echo "::set-output name=run_id::$(\
             gh run list \
-              --workflow "${{ github.event.pull_request.base.ref == 'main' && 'publish-extractor.yaml' || 'publish-extractor.yaml' }}" \
+              --workflow publish-extractor.yaml \
               --json conclusion,headSha,status,databaseId \
-              --jq ".[] | select( .conclusion == \"success\" and .headSha == \"${{github.event.pull_request.base.sha}}\") | .databaseId" \
+              --jq "[.[] | select( .conclusion == \"success\" and .headSha == \"${{github.sha}}\") | .databaseId][0]" \
           )"
+          echo "
+          "
         env:
           GITHUB_TOKEN: ${{ github.token }}
 

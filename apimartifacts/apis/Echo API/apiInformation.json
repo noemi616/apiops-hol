@@ -2,7 +2,7 @@
   "name": "echo-api",
   "properties": {
     "path": "echo",
-    "displayName": "Echo API",
+    "displayName": "Echo API update 2",
     "apiRevision": "1",
     "isCurrent": true,
     "protocols": [
